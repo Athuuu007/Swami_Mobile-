@@ -2,141 +2,125 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import BlurText from './BlurText';
 import StarBorder from './StarBorder';
-import logoImg from '../assets/watermark.png';
+import ThreeCenterpiece from './ThreeCenterpiece';
 import './Hero.css';
 
-const DotsScatter = () => {
-  const dots = Array.from({ length: 24 });
-  return (
-    <div className="dots-scatter-container">
-      {dots.map((_, i) => {
-        const angle = (i / dots.length) * Math.PI * 2;
-        const radius = 120 + Math.random() * 80;
-        const x = Math.cos(angle) * radius;
-        const y = Math.sin(angle) * radius;
-        return (
-          <motion.div
-            key={i}
-            initial={{ x: 0, y: 0, opacity: 1, scale: 0 }}
-            animate={{ x, y, opacity: 0, scale: Math.random() + 0.5 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-            className="scatter-dot"
-          />
-        );
-      })}
-    </div>
-  );
-};
-
 const Hero = () => {
-  // 0: Text, 1: Transition(Dots), 2: Image
-  const [phase, setPhase] = useState(0);
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [isTextVisible, setIsTextVisible] = useState(true);
 
   useEffect(() => {
-    let timeout1, timeout2, timeout3;
+    // Simulating font load for the animation trigger
+    const timer = setTimeout(() => {
+      setFontsLoaded(true);
+    }, 100);
     
-    const runCycle = () => {
-      // 1. Text is shown. Wait 5s, then switch to Dots.
-      timeout1 = setTimeout(() => {
-        setPhase(1); // Dots scatter
-        
-        // 2. Wait 1s for dots to scatter, then show Image.
-        timeout2 = setTimeout(() => {
-          setPhase(2); // Image zooms in
-          
-          // 3. Wait 4s for Image, then loop back to Text.
-          timeout3 = setTimeout(() => {
-            setPhase(0); // Text fades in
-            runCycle();
-          }, 4000);
-          
-        }, 1000);
-        
-      }, 5000);
-    };
-
-    runCycle();
+    // 7-second animation loop: 
+    // Wait 4 seconds, fade out text & zoom out circle for 3 seconds, then repeat.
+    const loopInterval = setInterval(() => {
+      setIsTextVisible(false);
+      
+      // Bring back after 3 seconds
+      setTimeout(() => {
+        setIsTextVisible(true);
+      }, 3000);
+    }, 7000);
 
     return () => {
-      clearTimeout(timeout1);
-      clearTimeout(timeout2);
-      clearTimeout(timeout3);
+      clearTimeout(timer);
+      clearInterval(loopInterval);
     };
   }, []);
 
   return (
-    <section className="section hero-section" id="about">
-      <div className="hero-content" style={{ position: 'relative', minHeight: '300px' }}>
-        <div className="availability-badge" style={{ marginBottom: '2rem' }}>
-          <span className="dot"></span>
-          Available for new services
-        </div>
+    <section 
+      id="hero" 
+      className="hero-section-new"
+    >
+      <ThreeCenterpiece isZoomed={!isTextVisible} />
 
-        <div className="hero-animation-wrapper">
-          <AnimatePresence mode="wait">
-            {phase === 0 && (
+      <div className="hero-content-new">
+        
+        {/* Profile Picture / Logo */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={fontsLoaded ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
+          transition={fontsLoaded ? {
+            type: "spring",
+            stiffness: 260,
+            damping: 20,
+            delay: 0.2
+          } : { duration: 0 }}
+          className="profile-container"
+        >
+          <div className="profile-glow"></div>
+          <img 
+            src="/logo.png" 
+            alt="Swami Mobile Shopee" 
+            className="profile-img"
+            onError={(e) => {
+              e.target.onerror = null;
+              // Fallback if no logo
+              e.target.style.display = 'none';
+            }}
+          />
+        </motion.div>
+        
+        {/* The orchestrating wrapper for fading out the text elements */}
+        <AnimatePresence mode="wait">
+          {isTextVisible && (
+            <motion.div
+              key="hero-text-content"
+              initial={{ opacity: 0, y: 10, filter: "blur(10px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -10, filter: "blur(10px)" }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}
+            >
               <motion.div
-                key="text"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.5 }}
-                className="hero-text-container"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={fontsLoaded ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+                transition={fontsLoaded ? { 
+                  duration: 1.2, 
+                  repeat: Infinity, 
+                  repeatType: 'reverse', 
+                  repeatDelay: 5,
+                  ease: "easeOut" 
+                } : { duration: 0 }}
+                className="availability-badge-new"
               >
-                <h1 className="hero-title" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.3em' }}>
-                  <BlurText
-                    text="Your Device,"
-                    delay={100}
-                    animateBy="words"
-                    direction="bottom"
-                  />
-                  <BlurText
-                    text="Our Responsibility."
-                    delay={100}
-                    animateBy="words"
-                    direction="bottom"
-                    className="text-gradient"
-                  />
-                </h1>
-                <p className="hero-subtitle mt-4">
-                  <strong>SWAMI MOBILE SHOPEE</strong> <br />
-                  MOBILE | REPAIRING | ACCESSORIES
+                <span className="availability-text">
+                  Available for new services
+                </span>
+              </motion.div>
+
+              <h1 className="hero-title-new">
+                <span>Your Device,</span>
+                <span className="blur-gradient-accent">Our Responsibility.</span>
+              </h1>
+
+              <div className="subtitle-container">
+                <p className="subtitle-text">
+                  Welcome to Swami Mobile Shopee. Your one-stop destination for mobile sales, expert repairs, and premium accessories.
                 </p>
-                <div className="hero-buttons">
-                  <StarBorder className="btn btn-outline hero-btn">View Services</StarBorder>
-                  <StarBorder className="btn btn-outline hero-btn">Visit Store</StarBorder>
+              </div>
+              
+              <div className="hero-buttons-new">
+                <div onClick={() => document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' })}>
+                  <StarBorder className="btn btn-outline hero-btn">
+                    View Services
+                  </StarBorder>
                 </div>
-              </motion.div>
-            )}
+                <div onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}>
+                  <StarBorder className="btn btn-outline hero-btn">
+                    Contact Us
+                  </StarBorder>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-            {phase === 1 && (
-              <motion.div key="dots" className="dots-container">
-                <DotsScatter />
-              </motion.div>
-            )}
-
-            {phase === 2 && (
-              <motion.div
-                key="image"
-                initial={{ opacity: 0, scale: 0.5, filter: 'blur(20px)' }}
-                animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, scale: 1.2, filter: 'blur(20px)' }}
-                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="hero-image-container"
-              >
-                <img 
-                  src={logoImg} 
-                  alt="Swami Mobile Shopee Logo" 
-                  className="hero-logo-img"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "https://via.placeholder.com/300x300.png?text=Swami+Mobile+Logo";
-                  }}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
       </div>
     </section>
   );
