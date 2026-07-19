@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import GooeyNav from './GooeyNav';
 import StaggeredMenu from './StaggeredMenu';
 import logoImg from '../assets/watermark.png';
@@ -32,12 +32,29 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const { scrollY } = useScroll();
+  
+  const logoOpacity = useTransform(scrollY, [100, 400], [1, 0]);
+  const logoBlur = useTransform(scrollY, [100, 400], ["blur(0px)", "blur(10px)"]);
+  const logoPointerEvents = useTransform(scrollY, [300, 400], ["auto", "none"]);
+
   return (
     <>
       <div className="desktop-nav-wrapper">
-        <div className="fixed-logo" style={{ position: 'fixed', top: '1.5rem', left: '2.5rem', zIndex: 110 }}>
+        <motion.div 
+          className="fixed-logo" 
+          style={{ 
+            position: 'fixed', 
+            top: '1.5rem', 
+            left: '2.5rem', 
+            zIndex: 110,
+            opacity: logoOpacity,
+            filter: logoBlur,
+            pointerEvents: logoPointerEvents
+          }}
+        >
           <img src={logoImg} alt="Swami Mobile Logo" style={{ height: '160px', objectFit: 'contain', cursor: 'pointer' }} onClick={() => window.scrollTo(0, 0)} />
-        </div>
+        </motion.div>
         <motion.nav 
           className={`navbar-container ${scrolled ? 'scrolled' : ''}`}
           initial={{ y: -100, opacity: 0 }}
