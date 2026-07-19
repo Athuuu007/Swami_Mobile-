@@ -35,19 +35,17 @@ const Navbar = () => {
   return (
     <>
       <div className="desktop-nav-wrapper">
+        <div className="fixed-logo" style={{ position: 'fixed', top: '1.5rem', left: '2.5rem', zIndex: 110 }}>
+          <img src={logoImg} alt="Swami Mobile Logo" style={{ height: '160px', objectFit: 'contain', cursor: 'pointer' }} onClick={() => window.scrollTo(0, 0)} />
+        </div>
         <motion.nav 
           className={`navbar-container ${scrolled ? 'scrolled' : ''}`}
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <div className="navbar">
-            <div className="navbar-top">
-              <div className="logo">
-                <img src={logoImg} alt="Swami Mobile Logo" style={{ height: '36px', objectFit: 'contain' }} />
-              </div>
-            </div>
-            <div className="nav-content show">
+          <div className="navbar" style={{ justifyContent: 'center' }}>
+            <div className="nav-content show" style={{ width: '100%', justifyContent: 'space-between' }}>
               <div className="nav-links">
                 <GooeyNav items={navItems} initialActiveIndex={0} />
               </div>

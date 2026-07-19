@@ -27,7 +27,7 @@ const Footer = () => {
     window.open(whatsappUrl, '_blank');
     
     // 2. Send to Gmail via default mail client
-    const mailtoUrl = `mailto:support@swamimobile.com?subject=${encodeURIComponent("Repair Booking: " + formData.device)}&body=${encodeURIComponent(message)}`;
+    const mailtoUrl = `mailto:sswamimobile@gmail.com?subject=${encodeURIComponent("Repair Booking: " + formData.device)}&body=${encodeURIComponent(message)}`;
     window.location.href = mailtoUrl;
     
     // Reset form after submission
@@ -70,7 +70,7 @@ const Footer = () => {
               </div>
               <div className="contact-details">
                 <span className="contact-label">EMAIL SUPPORT</span>
-                <strong className="contact-value">support@swamimobile.com</strong>
+                <strong className="contact-value">sswamimobile@gmail.com</strong>
               </div>
             </div>
 
@@ -80,7 +80,7 @@ const Footer = () => {
               </div>
               <div className="contact-details">
                 <span className="contact-label">WORKSHOP LOCATION</span>
-                <strong className="contact-value">Shop No. 12, Main Market, Pune, MH</strong>
+                <strong className="contact-value">Shop No 12 , Swami Mobile Shopee (Basement) Swapnagandh Apartment, Land Mark Pawan Chemist, Raikar Mala Dhayari Pune 411041</strong>
               </div>
             </div>
 
@@ -94,7 +94,7 @@ const Footer = () => {
                 <div className="map-pin"></div>
                 <span className="map-pin-label">SWAMI MOBILE</span>
               </div>
-              <button className="btn-get-directions" onClick={() => window.open('https://maps.google.com/?q=Pune', '_blank')}>
+              <button className="btn-get-directions" onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent('Shop No 12 , Swami Mobile Shopee (Basement) Swapnagandh Apartment, Land Mark Pawan Chemist, Raikar Mala Dhayari Pune 411041')}`, '_blank')}>
                 Get Directions
               </button>
             </div>

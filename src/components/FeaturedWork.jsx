@@ -8,9 +8,14 @@ const FeaturedWork = () => {
     <section className="section featured-section container" id="products">
       <div className="featured-header">
         <h2 className="featured-title">Expert Mobile Repairs!</h2>
-        <p className="featured-subtitle" style={{ fontSize: '1.2rem', marginTop: '0.5rem', color: '#f59e0b' }}>
-          तुमच्या विश्वासाचे मोबाईल दुरुस्ती केंद्र! (Your trusted destination for mobile repairs)
-        </p>
+        <div className="featured-subtitle" style={{ display: 'inline-block', backgroundColor: 'rgba(245, 158, 11, 0.1)', padding: '0.8rem 1.5rem', borderRadius: '0.5rem', border: '1px solid rgba(245, 158, 11, 0.3)', marginTop: '1rem' }}>
+          <p style={{ fontSize: '1.3rem', color: '#f59e0b', marginBottom: '0.4rem', fontWeight: '600' }}>
+            तुमच्या विश्वासाचे मोबाईल दुरुस्ती केंद्र!
+          </p>
+          <p style={{ fontSize: '1.1rem', color: '#d4d4d8' }}>
+            Your trusted destination for mobile repairs
+          </p>
+        </div>
       </div>
 
       <div className="featured-grid">

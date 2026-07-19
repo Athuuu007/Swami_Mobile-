@@ -53,7 +53,7 @@ const Experience = () => {
 
         <ParticleCard glowColor="245, 158, 11" className="card service-card text-center magic-bento-card magic-bento-card--border-glow">
           <div className="icon-wrapper green"><ArrowRightLeft className="icon" /></div>
-          <span className="badge">Software</span>
+          <span className="badge">Hardware / Software</span>
           <h4>Data Transfer</h4>
           <p className="company">Fast, Secure & All Devices</p>
         </ParticleCard>
@@ -70,6 +70,7 @@ const Experience = () => {
           <span className="badge">Hardware</span>
           <h4>Camera Repair</h4>
           <p className="company">Lens & Sensor Replacement</p>
+          <p className="company" style={{ fontSize: '0.8rem', marginTop: '-0.3rem', color: 'var(--text-secondary)' }}>(As per availability)</p>
         </ParticleCard>
       </div>
     </section>
